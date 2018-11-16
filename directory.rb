@@ -1,44 +1,27 @@
 def input_students
+  students = []
+
   puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
-  # create an empty array
-  students = []
-  # get the first name
   name = gets.chomp
   puts "Please enter the cohort of the student"
   cohort = gets.chomp
-  if cohort == ""
-    puts "The cool kids are in the November cohort: we'll put you with them!"
-    cohort = "november"
-  end
-  puts "Please enter the nationality of the student"
-  nationality = gets.chomp
-  puts "Please enter the favourite sport of the student"
-  sport = gets.chomp
-  
-  # while the name is not empty, repeat this code
+
   while !name.empty? do
-    # add the student hash to the array
-    students << {name: name, cohort: cohort, nationality: nationality, sport: sport }
+    students << {name: name, cohort: cohort}
     puts "Now we have #{students.count} students"
-    # get another name from the user
+
     puts "Let's enter a new student: name?"
     name = gets.chomp
-    if name == "" 
+
+    if name == ""
       break
     end
+
     puts "cohort?"
     cohort = gets.chomp
-    if cohort == ""
-      puts "The cool kids are in the November cohort: we'll put you with them!"
-      cohort = "november"
-    end
-    puts "nationality?"
-    nationality = gets.chomp
-    puts "sport?"
-    sport = gets.chomp
   end
-  # return the array of students
+
   students
 end
 
@@ -48,17 +31,21 @@ def print_header
 end
 
 def print(students)
-  student_count = 0
-  until student_count == students.count
-    students.each do |student|
-      puts "#{student[:name].center(10)} (#{student[:cohort]} cohort), nationality: #{student[:nationality].center(5)}, favourite sport: #{student[:sport].center(5)}"
-        if student_count == students.count
-          break
-        end
-    student_count += 1
+  cohorts = []
+
+    students.each do |student| cohorts.push(student[:cohort])
     end
-  end
+
+      cohorts.uniq.each do |cohort|
+        puts "Cohort: #{cohort}"
+        students.map do |student|
+          if student[:cohort] == cohort
+            puts student[:name]
+          end
+        end
+      end
 end
+
 
 def print_footer(students)
   puts "Overall, we have #{students.count} great students".center(50)

@@ -31,8 +31,8 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
+  puts "The students of Villains Academy".center(70)
+  puts "-------------".center(70)
 end
 
 def print(students)
@@ -49,7 +49,7 @@ def print(students)
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
+  puts "Overall, we have #{students.count} great students".center(70)
 end
 
 students = input_students

@@ -31,15 +31,15 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy".center(70)
-  puts "-------------".center(70)
+  puts "The students of Villains Academy".center(50)
+  puts "-------------".center(50)
 end
 
 def print(students)
   student_count = 0
   until student_count == students.count
     students.each do |student|
-      puts "#{student[:name]} (#{student[:cohort]} cohort), nationality: #{student[:nationality]}, favourite sport: #{student[:sport]}"
+      puts "#{student[:name].center(10)} (#{student[:cohort]} cohort), nationality: #{student[:nationality].center(5)}, favourite sport: #{student[:sport].center(5)}"
         if student_count == students.count
           break
         end
@@ -49,7 +49,7 @@ def print(students)
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students".center(70)
+  puts "Overall, we have #{students.count} great students".center(50)
 end
 
 students = input_students

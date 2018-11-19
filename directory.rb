@@ -3,23 +3,23 @@ def input_students
 
   puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
-  name = gets.chomp
+  name = gets.tr("\n\r", "")
   puts "Please enter the cohort of the student"
-  cohort = gets.chomp
+  cohort = gets.tr("\n\r", "")
 
   while !name.empty? do
     students << {name: name, cohort: cohort}
     puts "Now we have #{students.count} students"
 
     puts "Let's enter a new student: name?"
-    name = gets.chomp
+    name = gets.tr("\n\r", "")
 
     if name == ""
       break
     end
 
     puts "cohort?"
-    cohort = gets.chomp
+    cohort = gets.tr("\n\r", "")
   end
 
   students

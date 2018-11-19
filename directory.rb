@@ -1,66 +1,65 @@
-def input_students
-  students = []
+@students = []
 
+def input_students
   puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
-  name = gets.tr("\n\r", "")
-  puts "Please enter the cohort of the student"
-  cohort = gets.tr("\n\r", "")
+  name = gets.chomp
 
   while !name.empty? do
-    students << {name: name, cohort: cohort}
-    puts "Now we have #{students.count} students"
+    @students << {name: name, cohort: :november}
+    puts "Now we have #{@students.count} students"
 
     puts "Let's enter a new student: name?"
-    name = gets.tr("\n\r", "")
-
-    if name == ""
-      break
-    end
-
-    puts "cohort?"
-    cohort = gets.tr("\n\r", "")
+    name = gets.chomp
   end
+end
 
-  students
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def show_students
+  print_header
+  print_student_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit
+  else
+    puts "I don't know that you meant, try again!"
+  end
 end
 
 def print_header
-  puts "The students of Villains Academy".center(50)
-  puts "-------------".center(50)
+  puts "The students of Villains Academy"
+  puts "-------------"
 end
 
-def print(students)
-  cohorts = []
 
-    students.each do |student| cohorts.push(student[:cohort])
+def print_student_list
+    @students.each do |student|
+      puts " #{student[:name]} (#{student[:cohort]} cohort)"
     end
-
-      cohorts.uniq.each do |cohort|
-        puts "Cohort: #{cohort}"
-        students.map do |student|
-          if student[:cohort] == cohort
-            puts student[:name]
-          end
-        end
-      end
 end
 
-
-def print_footer(students)
-  if students.count == 1
-    puts "Overall, we have 1 great student".center(50)
-  else
-    puts "Overall, we have #{students.count} great students".center(50)
-  end
+def print_footer
+  puts "Overall, we have #{@students.count} great students"
 end
 
-students = input_students
-# finally, we call the methods
-if students.empty?
-  puts "There is no student!"
-else
-print_header
-print(students)
-print_footer(students)
-end
+interactive_menu

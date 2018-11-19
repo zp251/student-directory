@@ -57,6 +57,10 @@ end
 
 students = input_students
 # finally, we call the methods
+if students.empty?
+  puts "There is no student!"
+else
 print_header
 print(students)
 print_footer(students)
+end

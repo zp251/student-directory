@@ -3,8 +3,8 @@
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to desired file"
+  puts "4. Load the list from desired file"
   puts "9. Exit"
 end
 
@@ -24,11 +24,9 @@ def process(selection)
     puts "You have chosen Option 2. Here is the list of students "
     show_students
   when "3"
-    puts "You have chosen Option 3. List saved successfully"
-    save_students
+    save_students(user_file)
   when "4"
-    puts "You have chosen Option 4. List loaded successfully"
-    load_students
+    load_students(user_file)
   when "9"
     exit
   else
@@ -75,34 +73,44 @@ def print_footer
   puts "Overall, we have #{@students.count} great students"
 end
 
-def save_students
-  file = File.open("students.csv", "w")
+def save_students(filename = "students.csv")
+  file = File.open(filename, "w")
   @students.each do |student|
     student_data = [student[:name]], [student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
   file.close
+  puts "File saved!"
 end
 
 def load_students(filename = "students.csv")
-  file = File.open("students.csv", "r")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     students_into_array(name, cohort)
   end
   file.close
+  puts "File loaded!"
+end
+
+def user_file
+  puts "Please enter the name of the file:"
+  user_file = STDIN.gets.chomp
+  if user_file == ""
+    "students.csv"
+  else
+    user_file
+  end
 end
 
 def try_load_students
   ARGV != nil ? filename = ARGV.first : filename = "students.csv"
 
-  if filename.nil?
-    load_students
-    puts "Data loaded from default .csv file: there are #{@students.count} students in your current directory."
-  elsif File.exists?(filename)
+  return if filename.nil?
+  if File.exists?(filename)
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded #{@students.count} students from #{filename}"
   else
     load_students
     puts "Sorry, '#{filename}' does not seem to exist. Loaded data from default .csv file: there are #{@students.count} students in your current directory."

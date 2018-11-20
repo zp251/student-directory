@@ -36,13 +36,18 @@ def input_students
   puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
   name = STDIN.gets.chomp
+  cohort = "november"
 
   while !name.empty? do
-    @students << {name: name, cohort: :november}
+    students_into_array(name, cohort)
     puts "Now we have #{@students.count} students"
     puts "Let's enter a new student: name?"
     name = STDIN.gets.chomp
   end
+end
+
+def students_into_array(name, cohort)
+  @students << {name: name, cohort: cohort.to_sym}
 end
 
 def show_students
@@ -55,7 +60,6 @@ def print_header
   puts "The students of Villains Academy"
   puts "-------------"
 end
-
 
 def print_student_list
     @students.each do |student|
@@ -78,23 +82,30 @@ def save_students
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
+  file = File.open("students.csv", "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym}
+    students_into_array(name, cohort)
   end
   file.close
 end
 
 def try_load_students
-  filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
+  if ARGV != nil
+    filename = ARGV.first
+  else
+    filename = "students.csv"
+  end
+
+  if filename.nil?
+    load_students
+    puts "Data loaded from default .csv file: there are #{@students.count} students in your current directory."
+  elsif File.exists?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else
-    puts "Sorry, #{filename} does not seem to exist"
-    Exit
+    load_students
+    puts "Sorry, '#{filename}' does not seem to exist. Loaded data from default .csv file: there are #{@students.count} students in your current directory."
   end
 end
 
